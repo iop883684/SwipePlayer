@@ -6,3 +6,4 @@ Animation power by [YetAnotherAnimationLibrary](https://github.com/lkzhao/YetAno
 
 
 ![alt text](https://raw.githubusercontent.com/iop883684/SwipePlayer/master/image/img.png)
+![alt text](https://raw.githubusercontent.com/iop883684/SwipePlayer/master/image/img2.png)
