@@ -1,15 +1,20 @@
 PODS:
-  - SnapKit (4.0.0)
-  - YetAnotherAnimationLibrary (1.1.0)
+  - SnapKit (5.0.1)
+  - YetAnotherAnimationLibrary (1.4.0)
 
 DEPENDENCIES:
   - SnapKit
   - YetAnotherAnimationLibrary
 
+SPEC REPOS:
+  trunk:
+    - SnapKit
+    - YetAnotherAnimationLibrary
+
 SPEC CHECKSUMS:
-  SnapKit: a42d492c16e80209130a3379f73596c3454b7694
-  YetAnotherAnimationLibrary: e499e262c031c6b1f05809cd9f5e2eeb5282f5a5
+  SnapKit: 97b92857e3df3a0c71833cce143274bf6ef8e5eb
+  YetAnotherAnimationLibrary: 7f808b10c2d193dd3e82407e722fa60aa0bdff2d
 
-PODFILE CHECKSUM: 11e59cd1a54cb179335b56d66b5549ed23521e6f
+PODFILE CHECKSUM: 2b10395c1dbbc8bb60df6493b0e9ba7a33442306
 
-COCOAPODS: 1.3.1
+COCOAPODS: 1.9.1
