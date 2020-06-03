@@ -7,14 +7,13 @@
 //
 
 import UIKit
-import SnapKit
 import YetAnotherAnimationLibrary
 
+private let miniPlayerHeight:CGFloat = 50
 
 class TabbarController: UITabBarController {
     
     var playerVC:PlayerViewController!
-    var botConstrain:Constraint!
 
     var playerCenter:CGPoint! = .zero
     var viewCenter:CGPoint! = .zero
@@ -35,13 +34,6 @@ class TabbarController: UITabBarController {
         playerVC.delegate = self
         view.insertSubview(playerVC.view, belowSubview: tabBar)
         
-        let screenHeight = UIScreen.main.bounds.size.height
-        playerVC.view.snp.makeConstraints { (make) in
-            make.left.right.equalToSuperview()
-            botConstrain = make.bottom.equalTo(screenHeight - tabBar.frame.height).constraint.update(priority: 200)
-            make.height.equalTo(screenHeight + 50)
-        }
-        
         let gesture = UIPanGestureRecognizer(target: self, action: #selector(pan(gr:)))
         gesture.delegate = self
         playerVC.view.addGestureRecognizer(gesture)
@@ -51,11 +43,16 @@ class TabbarController: UITabBarController {
     
     override func viewDidAppear(_ animated: Bool) {
         
+        let screenHeight = UIScreen.main.bounds.size.height
+        var frame = UIScreen.main.bounds
+        frame.origin.y = screenHeight - miniPlayerHeight - tabBar.frame.height
+        playerVC.view.frame = frame
+        
         if playerCenter == .zero {
             
             playerCenter = playerVC.view.center
             var poin = view.center
-            poin.y -= tabBar.frame.height/2
+            poin.y -= miniPlayerHeight
             viewCenter = poin
             
             print("player center", playerVC.view.center)
