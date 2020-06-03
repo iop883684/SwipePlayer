@@ -11,11 +11,10 @@ import SnapKit
 import YetAnotherAnimationLibrary
 
 
-class ViewController: UIViewController {
+class TabbarController: UITabBarController {
     
     var playerVC:PlayerViewController!
     var botConstrain:Constraint!
-    @IBOutlet var tabbarView:UITabBar!
 
     var playerCenter:CGPoint! = .zero
     var viewCenter:CGPoint! = .zero
@@ -30,14 +29,16 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         
-        playerVC = self.storyboard?.instantiateViewController(withIdentifier: "playerVC") as! PlayerViewController
+        if let pl = self.storyboard?.instantiateViewController(withIdentifier: "playerVC") as? PlayerViewController{
+            playerVC = pl
+        }
         playerVC.delegate = self
-        view.insertSubview(playerVC.view, belowSubview: tabbarView)
+        view.insertSubview(playerVC.view, belowSubview: tabBar)
         
         let screenHeight = UIScreen.main.bounds.size.height
         playerVC.view.snp.makeConstraints { (make) in
             make.left.right.equalToSuperview()
-            botConstrain = make.bottom.equalTo(screenHeight - 50).constraint.update(priority: 200)
+            botConstrain = make.bottom.equalTo(screenHeight - tabBar.frame.height).constraint.update(priority: 200)
             make.height.equalTo(screenHeight + 50)
         }
         
@@ -54,15 +55,15 @@ class ViewController: UIViewController {
             
             playerCenter = playerVC.view.center
             var poin = view.center
-            poin.y -= 25
+            poin.y -= tabBar.frame.height/2
             viewCenter = poin
             
             print("player center", playerVC.view.center)
             print("view center", view.center)
             
-            tabbarDefaultCenter = tabbarView.center
+            tabbarDefaultCenter = tabBar.center
             tabbarEndCenter = tabbarDefaultCenter
-            tabbarEndCenter.y += 50
+            tabbarEndCenter.y += tabBar.frame.height
             
         }
         
@@ -86,7 +87,7 @@ class ViewController: UIViewController {
             playerVC.view.yaal.center.setTo(newPoint)
             
             let tabbarNewPoint = getLocationForTabbar(poin: newPoint)
-            tabbarView.yaal.center.setTo(tabbarNewPoint)
+            tabBar.yaal.center.setTo(tabbarNewPoint)
             
         default:
             var ve = gr.velocity(in: nil)
@@ -95,10 +96,10 @@ class ViewController: UIViewController {
 //            playerVC.view.yaal.center.decay(initialVelocity:ve, damping: 5)
             if ve.y > 0{
                 playerVC.view.yaal.center.animateTo(playerCenter)
-                tabbarView.yaal.center.animateTo(tabbarDefaultCenter)
+                tabBar.yaal.center.animateTo(tabbarDefaultCenter)
             } else {
                 playerVC.view.yaal.center.animateTo(viewCenter)
-                tabbarView.yaal.center.animateTo(tabbarEndCenter)
+                tabBar.yaal.center.animateTo(tabbarEndCenter)
             }
             
         }
@@ -106,21 +107,21 @@ class ViewController: UIViewController {
     
     func getLocationForTabbar(poin:CGPoint)->CGPoint{
         
-        print("point", poin.y)
+        //print("point", poin.y)
         
         let playerTravelDistant = playerCenter.y - viewCenter.y
         let tabbarTravelDistant = tabbarEndCenter.y - tabbarDefaultCenter.y
         
         let currentY = tabbarEndCenter.y - (poin.y-viewCenter.y) / playerTravelDistant * tabbarTravelDistant
         
-        print(currentY)
+//        print(currentY)
         
         return CGPoint(x: tabbarDefaultCenter.x, y: currentY)
     }
     
 }
 
-extension ViewController: UIGestureRecognizerDelegate{
+extension TabbarController: UIGestureRecognizerDelegate{
     
     public func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
         return gestureSimultaneously
@@ -128,11 +129,11 @@ extension ViewController: UIGestureRecognizerDelegate{
     
 }
 
-extension ViewController: PlayerDelegate{
+extension TabbarController: PlayerDelegate{
     
     func didTapOnPlayer() {
         playerVC.view.yaal.center.animateTo(viewCenter)
-        tabbarView.yaal.center.animateTo(tabbarEndCenter)
+        tabBar.yaal.center.animateTo(tabbarEndCenter)
     }
     
     func scrollStatus(isTop: Bool) {
